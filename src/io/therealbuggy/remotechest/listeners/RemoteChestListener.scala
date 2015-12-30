@@ -40,7 +40,8 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
           remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
         }
 
-        if(event.getAction == Action.RIGHT_CLICK_BLOCK) {
+        if(event.getAction == Action.RIGHT_CLICK_BLOCK
+          && handStack.getType == Material.CHEST) {
           if(api.addChest(player, clickedBlockLocation, player.getItemInHand)) {
             remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemDefiniuBau(player)
             return
