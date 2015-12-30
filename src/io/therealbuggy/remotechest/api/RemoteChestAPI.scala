@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 import scala.collection.mutable
-
+import scala.collection.JavaConverters._
 /**
   * Created by jonathan on 30/12/15.
   */
@@ -37,7 +37,12 @@ class RemoteChestAPI(remoteChestPlugin: RemoteChest) extends BaseMapAPI{
       " " + String.valueOf(locationId.getBlockY) +
       " " + String.valueOf(locationId.getBlockZ)
 
-    itemMeta.getLore.set(0, locationString)
+    val lore = mutable.MutableList[String]()
+    if(itemMeta.hasLore) {
+      lore ++= itemMeta.getLore.asScala
+    }
+
+    lore(3) = locationString
     applyItemStack.setItemMeta(itemMeta)
 
     playerChests.get(player).get.add(locationId)
