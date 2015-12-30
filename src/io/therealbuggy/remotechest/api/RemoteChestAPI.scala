@@ -38,11 +38,10 @@ class RemoteChestAPI(remoteChestPlugin: RemoteChest) extends BaseMapAPI{
       " " + String.valueOf(locationId.getBlockZ)
 
     val lore = mutable.MutableList[String]()
-    if(itemMeta.hasLore) {
-      lore ++= itemMeta.getLore.asScala
-    }
+    lore += locationString
 
-    lore(3) = locationString
+    itemMeta.setLore(lore.asJava)
+
     applyItemStack.setItemMeta(itemMeta)
 
     playerChests.get(player).get.add(locationId)

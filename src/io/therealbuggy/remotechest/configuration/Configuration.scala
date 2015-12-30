@@ -42,14 +42,14 @@ class Configuration(remoteChestPlugin: RemoteChest, fileConfiguration: FileConfi
 
     def enviarMensagemDefiniuBau(player: Player): Unit = {
       var mensagem = ConfigurationUtil.replaceColors(mensagemDefiniuBau)
-      mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
+      mensagem = mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
       mensagem = mensagem.replace("$maximo", String.valueOf(ConfigAPI.getMaximo(player)))
       player.sendMessage(mensagem)
     }
 
     def enviarMensagemRemoveuBau(player: Player): Unit = {
       var mensagem = ConfigurationUtil.replaceColors(mensagemRemoveuBau)
-      mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
+      mensagem = mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
       mensagem = mensagem.replace("$maximo", String.valueOf(ConfigAPI.getMaximo(player)))
       player.sendMessage(mensagem)
     }
