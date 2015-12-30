@@ -20,7 +20,7 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
     val api: API = remoteChestPlugin.obtainAPI
     val player: Player = event.getPlayer
 
-    if (handStack != null){
+    if (handStack != null && handStack.getType != Material.AIR){
 
       if(event.getClickedBlock != null
         && event.getClickedBlock.getType == Material.CHEST) {

@@ -48,6 +48,7 @@ abstract class BaseMapAPI extends API {
 
   override def isAItemChest(itemStack: ItemStack) : Boolean = {
     val itemMeta = itemStack.getItemMeta
+    if(!itemMeta.hasLore) return false
     val lore = itemMeta.getLore.asScala.toList
     lore.foreach((description) => {
       if(description.startsWith(Statics.remoteChestTag)) {
