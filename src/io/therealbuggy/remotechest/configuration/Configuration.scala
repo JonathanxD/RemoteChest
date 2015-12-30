@@ -2,12 +2,9 @@ package io.therealbuggy.remotechest.configuration
 
 import io.therealbuggy.remotechest.RemoteChest
 import io.therealbuggy.remotechest.util.{ConfigurationUtil, BooleanUtil}
-import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import scala.collection.JavaConverters._
-
-import scala.collection.immutable.TreeMap
 
 /**
   * Created by jonathan on 20/12/15.

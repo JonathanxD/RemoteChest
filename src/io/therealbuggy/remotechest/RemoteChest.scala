@@ -15,7 +15,7 @@ class RemoteChest extends JavaPlugin {
 
   private var logger: Logger = null
   private var config: Configuration = null
-  private var api: API;
+  private var api: API = null
 
   override def onEnable(): Unit ={
     saveDefaultConfig()

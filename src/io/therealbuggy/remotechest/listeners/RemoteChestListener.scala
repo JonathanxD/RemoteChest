@@ -2,9 +2,9 @@ package io.therealbuggy.remotechest.listeners
 
 import io.therealbuggy.remotechest.RemoteChest
 import io.therealbuggy.remotechest.api.API
-import org.bukkit.block.{Chest, Block}
+import org.bukkit.block.Chest
 import org.bukkit.entity.Player
-import org.bukkit.{Bukkit, Material, Location}
+import org.bukkit.{Material, Location}
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.{EventHandler, Listener}
