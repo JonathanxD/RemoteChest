@@ -1,5 +1,6 @@
 package io.therealbuggy.remotechest.configuration
 
+import io.therealbuggy.remotechest.RemoteChest
 import io.therealbuggy.remotechest.util.{ConfigurationUtil, BooleanUtil}
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.FileConfiguration
@@ -25,7 +26,7 @@ object Secoes {
   val mensagemBauNaoEncontrado = secaoMensagens+".bauNaoEncontrado"
 }
 
-class Configuration(fileConfiguration: FileConfiguration) {
+class Configuration(remoteChestPlugin: RemoteChest, fileConfiguration: FileConfiguration) {
 
 
   val quantidadePorJogador: Int = fileConfiguration.getInt(Secoes.quantidadePorJogador)
@@ -44,9 +45,40 @@ class Configuration(fileConfiguration: FileConfiguration) {
 
     def enviarMensagemDefiniuBau(player: Player): Unit = {
       var mensagem = ConfigurationUtil.replaceColors(mensagemDefiniuBau)
-      //mensagem.replace("$baus", API.getBaus(player))
-      mensagem = mensagem.replace("$maximo", String.valueOf(ConfigAPI.getMaximo(player)));
+      mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
+      mensagem = mensagem.replace("$maximo", String.valueOf(ConfigAPI.getMaximo(player)))
+      player.sendMessage(mensagem)
     }
+
+    def enviarMensagemRemoveuBau(player: Player): Unit = {
+      var mensagem = ConfigurationUtil.replaceColors(mensagemRemoveuBau)
+      mensagem.replace("$baus", String.valueOf(remoteChestPlugin.obtainAPI.getChests(player)))
+      mensagem = mensagem.replace("$maximo", String.valueOf(ConfigAPI.getMaximo(player)))
+      player.sendMessage(mensagem)
+    }
+
+    def enviarMensagemExcedeuLimite(player: Player): Unit = {
+      val mensagem = ConfigurationUtil.replaceColors(mensagemExcedeuLimite)
+      player.sendMessage(mensagem)
+    }
+
+    def enviarMensagemRemoverBau(player: Player): Unit = {
+      val mensagem = ConfigurationUtil.replaceColors(mensagemRemoverBau)
+      player.sendMessage(mensagem)
+    }
+
+    def enviarMensagemNaoPodeDefinir(player: Player): Unit = {
+      val mensagem = ConfigurationUtil.replaceColors(mensagemNaoPodeDefinir)
+      player.sendMessage(mensagem)
+    }
+
+    def enviarMensagemBauNaoEncontrado(player: Player): Unit = {
+      val mensagem = ConfigurationUtil.replaceColors(mensagemBauNaoEncontrado)
+      player.sendMessage(mensagem)
+    }
+
+
+
   }
 
   object ConfigAPI {

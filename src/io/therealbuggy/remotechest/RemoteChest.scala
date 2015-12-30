@@ -2,8 +2,10 @@ package io.therealbuggy.remotechest
 
 import java.util.logging.Logger
 
-import io.therealbuggy.remotechest.commands.{PingViewerCommand, PingCommand}
+import io.therealbuggy.remotechest.api.{RemoteChestAPI, API}
 import io.therealbuggy.remotechest.configuration.Configuration
+import io.therealbuggy.remotechest.listeners.RemoteChestListener
+import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -13,16 +15,19 @@ class RemoteChest extends JavaPlugin {
 
   private var logger: Logger = null
   private var config: Configuration = null
+  private var api: API;
 
   override def onEnable(): Unit ={
     saveDefaultConfig()
     logger = getLogger
+    config = new Configuration(this, getConfig)
+    api = new RemoteChestAPI(this)
+    Bukkit.getPluginManager.registerEvents(new RemoteChestListener(this), this)
     logger.info("Plugin habilitado")
-    getCommand("pingv").setExecutor(new PingCommand(this))
-    getCommand("remotechest").setExecutor(new PingViewerCommand(this))
-    config = new Configuration(getConfig)
+
   }
 
   def obatinLogger = logger
   def obtainConfig = config
+  def obtainAPI = api
 }
