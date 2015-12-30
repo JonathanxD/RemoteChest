@@ -1,4 +1,4 @@
-package io.therealbuggy.pingviewer.util
+package io.therealbuggy.remotechest.util
 
 import java.util.regex.Pattern
 

@@ -1,7 +1,6 @@
-package io.therealbuggy.pingviewer.commands
+package io.therealbuggy.remotechest.commands
 
-import io.therealbuggy.pingviewer.PingViewer
-import io.therealbuggy.pingviewer.util.PingReflect
+import io.therealbuggy.remotechest.RemoteChest
 import org.bukkit.{ChatColor, Bukkit}
 import org.bukkit.command.{Command, CommandExecutor, CommandSender}
 import org.bukkit.entity.Player
@@ -9,7 +8,7 @@ import org.bukkit.entity.Player
 /**
   * Created by jonathan on 20/12/15.
   */
-class PingViewerCommand(plugin: PingViewer) extends CommandExecutor{
+class PingViewerCommand(plugin: RemoteChest) extends CommandExecutor{
 
 
   override def onCommand(commandSender: CommandSender, command: Command, s: String, strings: Array[String]): Boolean = {
