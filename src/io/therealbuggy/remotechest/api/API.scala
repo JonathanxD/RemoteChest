@@ -1,8 +1,12 @@
 package io.therealbuggy.remotechest.api
 
+import java.util.UUID
+
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+
+import scala.collection.mutable
 
 /**
   * Created by jonathan on 30/12/15.
@@ -55,4 +59,14 @@ trait API {
     * @return Optional da localização
     */
   def hasChest(player: Player, location: Location) : Option[Location]
+
+
+  /**
+    * Método que deve ser chamado quando um bau for quebrado
+    * A implementação deste método deve verificar se há algum baú naquela localização, utilizando loops
+    * @param location Localização do bau
+    */
+  def breakedChest(location: Location) : Unit
+
+  def getChestsAsMap(): mutable.Map[UUID, mutable.Set[Location]]
 }

@@ -1,7 +1,9 @@
 package io.therealbuggy.remotechest.api
 
+import java.util.UUID
+
 import io.therealbuggy.remotechest.util.LocationUtil
-import org.bukkit.Location
+import org.bukkit.{Bukkit, Location}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -12,10 +14,10 @@ import scala.collection.JavaConverters._
   * Created by jonathan on 30/12/15.
   */
 abstract class BaseMapAPI extends API {
-  val playerChests = mutable.Map[Player, mutable.Set[Location]]()
+  val playerChests = mutable.Map[UUID, mutable.Set[Location]]()
 
   override def getChests(player: Player): Int = {
-    val option: Option[mutable.Set[Location]] = playerChests.get(player)
+    val option: Option[mutable.Set[Location]] = playerChests.get(player.getUniqueId)
     if (option.isDefined) option.get.size else 0
   }
 
@@ -33,12 +35,12 @@ abstract class BaseMapAPI extends API {
   override def removeChest(player: Player, id: Location): Boolean = {
     val chests = getChests(player)
     if (chests > 0) {
-      val option: Option[mutable.Set[Location]] = playerChests.get(player)
+      val option: Option[mutable.Set[Location]] = playerChests.get(player.getUniqueId)
       option.get -= id
 
       if (chests - 1 <= 0) {
         // Remover do map para poupar memória
-        playerChests.remove(player)
+        playerChests.remove(player.getUniqueId)
       }
 
       return true
@@ -60,11 +62,11 @@ abstract class BaseMapAPI extends API {
 
   override def hasChest(player: Player, location: Location) : Option[Location] = {
     if (getChests(player) == 0) return Option.empty
-    if (playerChests.get(player).get.contains(location)) {
+    if (playerChests.get(player.getUniqueId).get.contains(location)) {
       return Option.apply(location)
     }
 
-    playerChests.get(player).get.foreach((chestLocation) => {
+    playerChests.get(player.getUniqueId).get.foreach((chestLocation) => {
       if(chestLocation.getWorld.equals(location.getWorld)
         && chestLocation.getBlockX.equals(location.getBlockX)
         && chestLocation.getBlockY.equals(location.getBlockY)
@@ -74,6 +76,24 @@ abstract class BaseMapAPI extends API {
     })
 
     Option.empty
+  }
+
+  override def breakedChest(location: Location): Unit = {
+    playerChests.foreach {
+      case (player, localizacoes) =>
+        localizacoes.foreach((chestLocation) => {
+          if(chestLocation.getWorld.equals(location.getWorld)
+            && chestLocation.getBlockX.equals(location.getBlockX)
+            && chestLocation.getBlockY.equals(location.getBlockY)
+            && chestLocation.getBlockZ.equals(location.getBlockZ)){
+            removeChest(Bukkit.getPlayer(player), chestLocation)
+          }
+        })
+    }
+  }
+
+  override def getChestsAsMap() : mutable.Map[UUID, mutable.Set[Location]] = {
+    playerChests
   }
 
   object Statics {

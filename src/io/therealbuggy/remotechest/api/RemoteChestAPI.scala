@@ -26,7 +26,16 @@ class RemoteChestAPI(remoteChestPlugin: RemoteChest) extends BaseMapAPI{
     }
 
     if (chests == 0) {
-      playerChests += player -> mutable.Set.empty
+      playerChests += player.getUniqueId -> mutable.Set.empty
+    }
+
+    var storeStack: ItemStack = null
+    if(applyItemStack.getAmount > 1){
+      storeStack = new ItemStack(applyItemStack.getType, applyItemStack.getAmount-1, applyItemStack.getDurability)
+      storeStack.setItemMeta(applyItemStack.getItemMeta)
+      storeStack.setData(applyItemStack.getData)
+      storeStack.addEnchantments(applyItemStack.getEnchantments)
+      applyItemStack.setAmount(1)
     }
 
     val itemMeta = applyItemStack.getItemMeta
@@ -44,8 +53,17 @@ class RemoteChestAPI(remoteChestPlugin: RemoteChest) extends BaseMapAPI{
 
     applyItemStack.setItemMeta(itemMeta)
 
-    playerChests.get(player).get.add(locationId)
+    playerChests.get(player.getUniqueId).get.add(locationId)
+    if(storeStack != null){
+      val out: Map[Integer, ItemStack] = player.getInventory.addItem(storeStack).asScala.toMap
+      if(out.nonEmpty){
+        out.values.foreach((stack) => {
+          player.getWorld.dropItemNaturally(player.getLocation.add(0, 1, 0), stack)
+        })
 
+      }
+    }
     true
   }
+
 }

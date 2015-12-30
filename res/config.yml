@@ -1,18 +1,33 @@
 remotechest:
   # Quantidade maxima de baus remotos por jogador
   quantidadePorJogador: 10
+  # Tempo em minutos para o salvamento dos dados
+  # Obs: este salvamento irá salvar 2 arquivos, o principal e o arquivo de backup.
+  # O Salvamento ao desabilitar só salva o arquivo principal.
+  tempoDeSalvamento: 10
+  # Se habilitar a limpeza o sistema irá remover o baú dos "links" caso eles sejam quebrados!
+  habilitarLimpeza: sim
   # Ilimitado para Jogadores OP (sim/nao)
   ilimitadoParaOps: nao
   # Ilimitado para jogadores com as seguinte permissões (se não for para ninguem deixe [])
   # Exemplo:
   # ilimitadoParaPermissoes: []
+  # Observação: OPs tem todas permissões, logo, caso defina alguma aqui, definir o ilimitadoParaOps como não será inutil!
   ilimitadoParaPermissoes:
   - remotechest.unlimited
 
   mensagens:
-    definiuBau: '&6Voce definiu um bau! ($baus/$maximo)'
+    # Mensagem que aparecera quando o bau for definido
+    definiuBau: '&6Voce definiu um bau! (&b$baus&6/&b$maximo&6)'
+    # Mensagem que aparecera quando exceder o limite de baus
     execedeuLimite: '&6Voce excedeu o limite de baus!'
-    removeuBau: '&6Voce removeu um bau! ($baus/$maximo)'
+    # Mensagem que aparecera ao remover um bau
+    removeuBau: '&6Voce removeu um bau! (&b$baus&6/&b$maximo&6)'
+    # Mensagem que aparecera junto com a mensagem de limite excedido
     removerBau: '&6Clique com o botado esquerdo em um dos baus para remove-lo!'
-    naoPodeDefinir: '&6Voce nao pode definir este bau, tem certeza que ele é seu?'
-    bauNaoEncontrado: '&6Bau nao encontrado, pode ter sido removido ou quebrado!'
+    # Mensagem que aparecera quando não puder definir um bau (exemplo, se o evento for cancelado por um plugin de proteção)
+    naoPodeDefinir: '&cVoce nao pode definir este bau, tem certeza que ele é seu?'
+    # Mensagem que aparecera quando o bau não for encontrado dentro do sistema!
+    bauNaoEncontrado: '&cBau nao encontrado, pode ter sido removido ou quebrado!'
+    # Mensagem que aparecera caso não tenha mais baus para remover!
+    semMaisBaus: '&eVoce nao tem mais baus para remover!'
