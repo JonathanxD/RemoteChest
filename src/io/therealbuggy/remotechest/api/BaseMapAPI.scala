@@ -3,6 +3,7 @@ package io.therealbuggy.remotechest.api
 import java.util.UUID
 
 import io.therealbuggy.remotechest.util.LocationUtil
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.{Bukkit, Location}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -90,6 +91,12 @@ abstract class BaseMapAPI extends API {
           }
         })
     }
+  }
+
+  override def clearItem(itemStack: ItemStack): Unit ={
+    val itemMeta: ItemMeta = itemStack.getItemMeta
+    itemMeta.setLore(List.empty[String].asJava)
+    itemStack.setItemMeta(itemMeta)
   }
 
   override def getChestsAsMap() : mutable.Map[UUID, mutable.Set[Location]] = {

@@ -5,6 +5,7 @@ import io.therealbuggy.remotechest.api.API
 import org.bukkit.block.{BlockFace, Chest}
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.{Bukkit, Material, Location}
 import org.bukkit.event.block.{BlockPlaceEvent, BlockBreakEvent, Action}
 import org.bukkit.event.player.PlayerInteractEvent
@@ -29,7 +30,7 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
   def blockPlace(event: BlockPlaceEvent): Unit = {
     val api: API = remoteChestPlugin.obtainAPI
     if(event.getBlock.getType == Material.CHEST) {
-      if(api.isAItemChest(event.getItemInHand)) {
+      if(event.getItemInHand.getType == Material.CHEST && api.isAItemChest(event.getItemInHand)) {
 
         val locationOption: Option[Location] = api.getLocationFromStack(event.getItemInHand)
         var location: Location = null
@@ -56,8 +57,10 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
 
   @EventHandler(priority = EventPriority.HIGH)
   def clickListener(event: PlayerInteractEvent): Unit ={
-
-    val handStack = event.getItem//event.getPlayer.getItemInHand
+    if(event.getPlayer.isSneaking) {
+      return
+    }
+    val handStack = event.getItem
     val api: API = remoteChestPlugin.obtainAPI
     val player: Player = event.getPlayer
 
@@ -67,14 +70,14 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
         && (event.getClickedBlock.getType == Material.CHEST
         || event.getClickedBlock.getType == Material.TRAPPED_CHEST)) {
 
-        if(event.isCancelled) {
-          remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemNaoPodeDefinir(player)
-          return
-        }
         //Bloco clicado
         val clickedBlock = event.getClickedBlock
         val clickedBlockLocation = clickedBlock.getLocation
         if(handStack.getType == Material.CHEST){
+          if(event.isCancelled) {
+            remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemNaoPodeDefinir(player)
+            return
+          }
           // Remover bau
           if(event.getAction == Action.LEFT_CLICK_BLOCK) {
             if(api.getChests(player) == 0){
@@ -89,7 +92,7 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
             }
             remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
           }
-
+          // Adicionar bau
           if(event.getAction == Action.RIGHT_CLICK_BLOCK) {
             if(api.addChest(player, clickedBlockLocation, player.getItemInHand)) {
               remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemDefiniuBau(player)
@@ -112,11 +115,13 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
           if(locationOption.isDefined){
             location = locationOption.get
           }else{
+            api.clearItem(handStack)
             remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
             return
           }
 
           if(api.hasChest(player, location).isEmpty) {
+            api.clearItem(handStack)
             remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
             return
           }
@@ -124,17 +129,20 @@ class RemoteChestListener(remoteChestPlugin: RemoteChest) extends Listener {
           val remoteChestBlock = location.getWorld.getBlockAt(location)
           remoteChestBlock.getState match {
             case chest: Chest =>
-              //Player who, Action action, ItemStack item, Block clickedBlock, BlockFace clickedFace
               val ievent: PlayerInteractEvent = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, new ItemStack(Material.AIR), remoteChestBlock, BlockFace.NORTH)
               Bukkit.getPluginManager.callEvent(ievent)
               if(ievent.isCancelled) {
+                api.clearItem(handStack)
                 remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
               }else{
                 player.closeInventory()
                 player.openInventory(chest.getInventory)
               }
               return
-            case _ => remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
+            case _ => {
+              api.clearItem(handStack)
+              remoteChestPlugin.obtainConfig.Mensagem.enviarMensagemBauNaoEncontrado(player)
+            }
           }
 
         }

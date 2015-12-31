@@ -68,5 +68,7 @@ trait API {
     */
   def breakedChest(location: Location) : Unit
 
+  def clearItem(itemStack: ItemStack) : Unit
+
   def getChestsAsMap(): mutable.Map[UUID, mutable.Set[Location]]
 }

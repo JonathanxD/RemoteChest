@@ -13,6 +13,7 @@ object Secoes {
   val secaoPrincipal = "remotechest"
   val quantidadePorJogador = secaoPrincipal+".quantidadePorJogador"
   val ilimitadoParaOps = secaoPrincipal+".ilimitadoParaOps"
+  val tempoDeSalvamento = secaoPrincipal+".tempoDeSalvamento"
   val ilimitadoParaPermissoes = secaoPrincipal+".ilimitadoParaPermissoes"
   val habilitarLimpeza = secaoPrincipal+".habilitarLimpeza"
   val secaoMensagens = secaoPrincipal+".mensagens"
@@ -30,6 +31,7 @@ class Configuration(remoteChestPlugin: RemoteChest, fileConfiguration: FileConfi
 
 
   val quantidadePorJogador: Int = fileConfiguration.getInt(Secoes.quantidadePorJogador)
+  val tempoDeSalvamento: Int = fileConfiguration.getInt(Secoes.tempoDeSalvamento)
   val ilimitadoParaOps: Boolean = BooleanUtil.booleanFromString(fileConfiguration.getString(Secoes.ilimitadoParaOps))
   val habilitarLimpeza: Boolean = BooleanUtil.booleanFromString(fileConfiguration.getString(Secoes.habilitarLimpeza))
   val ilimitadoParaPermissoes: List[String] = fileConfiguration.getStringList(Secoes.ilimitadoParaPermissoes).asScala.toList

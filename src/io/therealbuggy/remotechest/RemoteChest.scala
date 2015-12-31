@@ -68,8 +68,7 @@ class RemoteChest extends JavaPlugin {
     logger.info("Carregado "+loadedChests+" chests!")
     logger.info("Registrando listener...")
     Bukkit.getPluginManager.registerEvents(new RemoteChestListener(this), this)
-    logger.info("Plugin habilitado!")
-
+    logger.info("Registrando scheduler...!")
     Bukkit.getScheduler.scheduleSyncRepeatingTask(this, new Runnable {
       override def run(): Unit = {
         logger.info("Salvando chests...")
@@ -77,7 +76,9 @@ class RemoteChest extends JavaPlugin {
         saveLoad.save()
         logger.info("Chests salvos!")
       }
-    }, 0L, 15*60*20L)
+    }, 0L, config.tempoDeSalvamento*60*20L)
+    logger.info("Secheduler de salvamento configurado para "+config.tempoDeSalvamento+" minutos!")
+    logger.info("Plugin habilitado!")
   }
 
   override def onDisable() : Unit ={

@@ -1,5 +1,5 @@
 name: RemoteChest
 author: TheRealBuggy
-version: SNAPSHOT-0.7
+version: SNAPSHOT-1.0
 description: Este plugin permite que você acesse seus baus remotamente!
 main: io.therealbuggy.remotechest.RemoteChest

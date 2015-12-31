@@ -3,8 +3,8 @@ remotechest:
   quantidadePorJogador: 10
   # Tempo em minutos para o salvamento dos dados
   # Obs: este salvamento irá salvar 2 arquivos, o principal e o arquivo de backup.
-  # O Salvamento ao desabilitar só salva o arquivo principal.
-  tempoDeSalvamento: 10
+  # O Salvamento que ocorre quando o plugin é desabilitado só salva o arquivo principal.
+  tempoDeSalvamento: 15
   # Se habilitar a limpeza o sistema irá remover o baú dos "links" caso eles sejam quebrados!
   habilitarLimpeza: sim
   # Ilimitado para Jogadores OP (sim/nao)
